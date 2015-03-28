@@ -1,0 +1,101 @@
+package com.shop.mobile;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+
+
+public class HomeListView extends ActionBarActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_list_view);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
+    
+    public void fetchJSON(final String urlString) {
+		Log.i("Url", urlString);
+		if (urlString == null) {
+			return;
+		}
+			Thread thread = new Thread(new Runnable() {
+				@SuppressWarnings("unused")
+				@Override
+				public void run() {
+					try {
+						String data = null;
+						InputStream stream = null;
+						URL url = new URL(urlString);
+						if (url == null) {
+							Log.e("Read And Parse JSON : ",
+									"Unable to Make URL");
+							return;
+						}
+						HttpURLConnection conn = (HttpURLConnection) url
+								.openConnection();
+						if (conn != null) {
+							conn.setReadTimeout(10000); /* milliseconds */
+							conn.setConnectTimeout(15000); /* milliseconds */
+							conn.setRequestMethod("GET");
+							conn.setDoInput(true);
+							conn.connect();
+							stream = conn.getInputStream();
+						}
+						if (stream != null) {
+							data = convertStreamToString(stream);
+							Log.i("Data : ", data);
+						}
+						if (stream != null)
+							stream.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+						RegistrationData.registrationDataInstance.parsedone = false;
+						return;
+					}
+				}
+			});
+			if (thread != null) {
+				thread.start();
+			}
+	}
+
+	public String convertStreamToString(java.io.InputStream is) {
+		java.util.Scanner scanner = null;
+		if (is != null) {
+			JSONData.jsonDataInstance.scanner = new java.util.Scanner(is);
+		}
+		if (JSONData.jsonDataInstance.scanner != null) {
+			scanner = JSONData.jsonDataInstance.scanner.useDelimiter("\\A");
+			return scanner.hasNext() ? scanner.next() : "";
+		}
+		return null;
+
+	}
+}

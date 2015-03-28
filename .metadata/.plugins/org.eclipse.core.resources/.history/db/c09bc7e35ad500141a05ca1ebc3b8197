@@ -1,0 +1,5 @@
+package com.shop.mobile;
+
+public class HomeGridView extends Activity{
+
+}

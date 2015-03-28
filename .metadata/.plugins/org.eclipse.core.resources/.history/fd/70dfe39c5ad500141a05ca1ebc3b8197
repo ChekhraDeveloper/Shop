@@ -1,0 +1,115 @@
+package com.shop.mobile;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+
+public class HomeListView extends ActionBarActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_list_view);
+     // List of items
+        String[] items = {
+                "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7",
+                "Item 8", "Item 9", "Item 10", "Item 11", "Item 12", "Item 13", "Item 14",
+                "Item 15"
+        };
+        // Create an array adapter
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, items);
+         
+        // Create a ListView object
+        ListView listView = (ListView) findViewById(R.id.listview);
+        // set the adapter to the view
+        listView.setAdapter(adapter);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
+    
+    public void fetchJSON(final String urlString) {
+		Log.i("Url", urlString);
+		if (urlString == null) {
+			return;
+		}
+			Thread thread = new Thread(new Runnable() {
+				@SuppressWarnings("unused")
+				@Override
+				public void run() {
+					try {
+						String data = null;
+						InputStream stream = null;
+						URL url = new URL(urlString);
+						if (url == null) {
+							Log.e("fetch JSON","Unable to Make URL");
+							return;
+						}
+						HttpURLConnection conn = (HttpURLConnection) url
+								.openConnection();
+						if (conn != null) {
+							conn.setReadTimeout(10000); /* milliseconds */
+							conn.setConnectTimeout(15000); /* milliseconds */
+							conn.setRequestMethod("GET");
+							conn.setDoInput(true);
+							conn.connect();
+							stream = conn.getInputStream();
+						}
+						if (stream != null) {
+							data = convertStreamToString(stream);
+							Log.i("Data : ", data);
+						}
+						if (stream != null)
+							stream.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			});
+			if (thread != null) {
+				thread.start();
+			}
+	}
+
+	@SuppressWarnings("resource")
+	public String convertStreamToString(java.io.InputStream is) {
+		java.util.Scanner scanner = null;
+		if (is != null) {
+			scanner = new java.util.Scanner(is);
+		}
+		if (scanner != null) {
+			scanner = scanner.useDelimiter("\\A");
+			return scanner.hasNext() ? scanner.next() : "";
+		}
+		return null;
+
+	}
+}

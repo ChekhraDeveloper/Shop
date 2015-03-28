@@ -1,0 +1,75 @@
+package com.shop.mobile;
+
+import java.io.ObjectOutputStream.PutField;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+
+public class HomeListView extends ActionBarActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_list_view);
+     // List of items
+        //TODO Get these items from fetchJSON
+        final String[] items = {
+                "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7",
+                "Item 8", "Item 9", "Item 10", "Item 11", "Item 12", "Item 13", "Item 14",
+                "Item 15"
+        };
+        // Create an array adapter
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, items);
+         
+        // Create a ListView object
+        ListView listView = (ListView) findViewById(R.id.listview);
+        // set the adapter to the view
+        listView.setOnItemClickListener(new OnItemClickListener() {
+     	   @Override
+     	   public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
+     	      //Intent intent= new Intent(HomeListView.this, HomeGridView.class);
+     	      String item  = items[position];
+     	      Log.i("position",position+1"");
+     	     Log.i("item",item);
+     	      //intent.putExtra("item", item);
+     	      //startActivity(intent);
+     	      
+     	   } 
+     	});
+        listView.setAdapter(adapter);
+        
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
+    
+    
+}

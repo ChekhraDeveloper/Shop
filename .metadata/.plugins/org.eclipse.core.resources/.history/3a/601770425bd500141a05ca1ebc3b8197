@@ -1,0 +1,11 @@
+package com.shop.mobile;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class HomeGridView extends Activity{
+	protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_list_view);
+	}
+}
