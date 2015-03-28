@@ -11,11 +11,17 @@ public class HomeGridView extends ActionBarActivity{
         setContentView(R.layout.home_grid_view);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-        	actionBar.setDisplayShowHomeEnabled(true);
+        	actionBar.setLogo(R.drawable.ic_launcher);
+        	actionBar.setDisplayUseLogoEnabled(true);
+			actionBar.setDisplayShowHomeEnabled(true);
 			actionBar.setDisplayHomeAsUpEnabled(true);
 			actionBar.setHomeAsUpIndicator(R.drawable.arrow);
 		}
-         Intent intent = getIntent();
+        /*actionBar.setLogo(R.drawable.ic_launcher);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);*/
+        Intent intent = getIntent();
         //Bundle extras = intent.getExtras();
         String category = intent.getStringExtra("category");
         //TODO after we get item. We have to fetch JSON related to this Category
