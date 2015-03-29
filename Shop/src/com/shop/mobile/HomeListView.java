@@ -9,23 +9,25 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class HomeListView extends ActionBarActivity {
-
+	TextView checkoutCount  = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_list_view);
-		//ActionBar actionBar = getSupportActionBar();
-		//actionBar.setHomeButtonEnabled(true);
-        //actionBar.setDisplayHomeAsUpEnabled(true);
-        
+		
 		// List of items
 		// TODO Get these items from fetchJSON
 		final String[] categories = { "Category 1", "Category 2", "Category 3", "Category 4",
@@ -50,7 +52,7 @@ public class HomeListView extends ActionBarActivity {
 						HomeGridView.class);
 				final String category = (String) parent.getItemAtPosition(position);
 				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-					view.animate().setDuration(2000).alpha(0)
+					view.animate().setDuration(1000).alpha(0)
 							.withEndAction(new Runnable() {
 								@Override
 								public void run() {
@@ -60,7 +62,6 @@ public class HomeListView extends ActionBarActivity {
 								}
 							});
 				}
-				Log.i("position", position + "");
 				Log.i("category", category);
 				intent.putExtra("category", category);
 				startActivity(intent);
@@ -71,11 +72,35 @@ public class HomeListView extends ActionBarActivity {
 
 	}
 
+	public void onCheckout(MenuItem item) {
+		Toast.makeText(HomeListView.this, "Check Out", Toast.LENGTH_SHORT)
+				.show();
+	}
+
+	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		/*if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+			RelativeLayout badgeLayout = (RelativeLayout) menu.findItem(
+					R.id.badge).getActionView();
+			checkoutCount = (TextView) badgeLayout
+					.findViewById(R.id.actionbar_notifcation_textview);
+			checkoutCount.setText("0");
+		}*/
+		/*final Menu m = menu;
+		final MenuItem item = menu.findItem(R.id.badge);
+		item.getActionView().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(HomeListView.this, "Check Out",
+						Toast.LENGTH_SHORT).show();
+			}
+		});*/
+
 		return true;
+
 	}
 
 	@Override
@@ -83,11 +108,11 @@ public class HomeListView extends ActionBarActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		Toast.makeText(HomeListView.this, "Check Out", Toast.LENGTH_SHORT).show();
+		switch (item.getItemId()) {
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 }

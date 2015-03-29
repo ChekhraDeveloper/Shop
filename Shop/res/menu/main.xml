@@ -4,9 +4,17 @@
     tools:context="com.shop.mobile.MainActivity" >
 
     <item
+        android:id="@+id/badge"
+        app:showAsAction="always"
+        android:icon="@drawable/checkout_light"
+        android:actionLayout="@layout/checkout_icon"
+        android:title="@string/checkout"
+        
+        >
+    </item>
+    <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
 
 </menu>
